@@ -59,7 +59,7 @@ type Service struct {
 var (
 	retryInterval    = 5 * time.Second  // time interval between retries
 	traceDuration    = 30 * time.Second // duration for every root tracing span
-	concurrentPushes = 50               // how many chunks to push simultaneously
+	concurrentPushes = 150              // how many chunks to push simultaneously
 	retryCount       = 6
 )
 
