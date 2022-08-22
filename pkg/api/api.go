@@ -86,7 +86,7 @@ const (
 
 	largeBufferFilesizeThreshold = 10 * 1000000 // ten megs
 
-	uploadSem = 50
+	uploadSem = 150
 )
 
 const (
