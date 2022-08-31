@@ -847,6 +847,7 @@ paths:
             $ref: "SwarmCommon.yaml#/components/schemas/SwarmReference"
           required: true
           description: "Root hash of content (can be of any type: collection, file, chunk)"
+        - $ref: "SwarmCommon.yaml#/components/parameters/SwarmStewardWithManifest"
       responses:
         "200":
           description: Ok

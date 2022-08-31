@@ -73,6 +73,7 @@ const (
 	SwarmCollectionHeader     = "Swarm-Collection"
 	SwarmPostageBatchIdHeader = "Swarm-Postage-Batch-Id"
 	SwarmDeferredUploadHeader = "Swarm-Deferred-Upload"
+	SwarmStewardWithManifest  = "Swarm-Steward-With-Manifest"
 )
 
 // The size of buffer used for prefetching content with Langos.
@@ -363,6 +364,13 @@ func requestEncrypt(r *http.Request) bool {
 
 func requestDeferred(r *http.Request) (bool, error) {
 	if h := strings.ToLower(r.Header.Get(SwarmDeferredUploadHeader)); h != "" {
+		return strconv.ParseBool(h)
+	}
+	return true, nil
+}
+
+func stewardWithManifest(r *http.Request) (bool, error) {
+	if h := strings.ToLower(r.Header.Get(SwarmStewardWithManifest)); h != "" {
 		return strconv.ParseBool(h)
 	}
 	return true, nil

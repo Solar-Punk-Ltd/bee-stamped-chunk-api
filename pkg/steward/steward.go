@@ -26,11 +26,11 @@ const parallelPush = 5
 type Interface interface {
 	// Reupload root hash and all of its underlying
 	// associated chunks to the network.
-	Reupload(context.Context, swarm.Address) error
+	Reupload(context.Context, swarm.Address, bool) error
 
 	// IsRetrievable checks whether the content
 	// on the given address is retrievable.
-	IsRetrievable(context.Context, swarm.Address) (bool, error)
+	IsRetrievable(context.Context, swarm.Address, bool) (bool, error)
 }
 
 type steward struct {
@@ -54,7 +54,7 @@ func New(getter storage.Getter, t traversal.Traverser, r retrieval.Interface, p 
 // addresses and push every chunk individually to the network.
 // It assumes all chunks are available locally. It is therefore
 // advisable to pin the content locally before trying to reupload it.
-func (s *steward) Reupload(ctx context.Context, root swarm.Address) error {
+func (s *steward) Reupload(ctx context.Context, root swarm.Address, withManifest bool) error {
 	sem := make(chan struct{}, parallelPush)
 	eg, _ := errgroup.WithContext(ctx)
 	fn := func(addr swarm.Address) error {
@@ -78,7 +78,7 @@ func (s *steward) Reupload(ctx context.Context, root swarm.Address) error {
 		return nil
 	}
 
-	if err := s.traverser.Traverse(ctx, root, fn); err != nil {
+	if err := s.traverser.Traverse(ctx, root, withManifest, fn); err != nil {
 		return fmt.Errorf("traversal of %s failed: %w", root.String(), err)
 	}
 
@@ -89,9 +89,9 @@ func (s *steward) Reupload(ctx context.Context, root swarm.Address) error {
 }
 
 // IsRetrievable implements Interface.IsRetrievable method.
-func (s *steward) IsRetrievable(ctx context.Context, root swarm.Address) (bool, error) {
+func (s *steward) IsRetrievable(ctx context.Context, root swarm.Address, withManifest bool) (bool, error) {
 	noop := func(leaf swarm.Address) error { return nil }
-	switch err := s.netTraverser.Traverse(ctx, root, noop); {
+	switch err := s.netTraverser.Traverse(ctx, root, withManifest, noop); {
 	case errors.Is(err, storage.ErrNotFound):
 		return false, nil
 	case err != nil:

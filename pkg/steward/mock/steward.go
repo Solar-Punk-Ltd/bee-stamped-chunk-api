@@ -17,14 +17,14 @@ type Steward struct {
 
 // Reupload implements steward.Interface Reupload method.
 // The given address is recorded.
-func (s *Steward) Reupload(_ context.Context, addr swarm.Address) error {
+func (s *Steward) Reupload(_ context.Context, addr swarm.Address, withManifest bool) error {
 	s.addr = addr
 	return nil
 }
 
 // IsRetrievable implements steward.Interface IsRetrievable method.
 // The method always returns true.
-func (s *Steward) IsRetrievable(_ context.Context, addr swarm.Address) (bool, error) {
+func (s *Steward) IsRetrievable(_ context.Context, addr swarm.Address, withManifest bool) (bool, error) {
 	return addr.Equal(s.addr), nil
 }
 

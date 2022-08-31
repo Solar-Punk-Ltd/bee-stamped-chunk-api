@@ -84,7 +84,7 @@ func (s *Service) CreatePin(ctx context.Context, ref swarm.Address, traverse boo
 	}
 
 	if traverse {
-		if err := s.traverser.Traverse(ctx, ref, iterFn); err != nil {
+		if err := s.traverser.Traverse(ctx, ref, false, iterFn); err != nil {
 			return fmt.Errorf("traversal of %q failed: %w", ref, err)
 		}
 	}
@@ -122,7 +122,7 @@ func (s *Service) DeletePin(ctx context.Context, ref swarm.Address) error {
 		return nil
 	}
 
-	if err := s.traverser.Traverse(ctx, ref, iterFn); err != nil {
+	if err := s.traverser.Traverse(ctx, ref, false, iterFn); err != nil {
 		return fmt.Errorf("traversal of %q failed: %w", ref, multierror.Append(err, iterErr))
 	}
 	if iterErr != nil {

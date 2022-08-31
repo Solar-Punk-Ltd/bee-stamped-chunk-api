@@ -55,14 +55,14 @@ func TestSteward(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = s.Reupload(ctx, addr)
+	err = s.Reupload(ctx, addr, true)
 	if err != nil {
 		t.Fatal(err)
 	}
 	mu.Lock()
 	defer mu.Unlock()
 
-	isRetrievable, err := s.IsRetrievable(ctx, addr)
+	isRetrievable, err := s.IsRetrievable(ctx, addr, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -106,7 +106,7 @@ func TestSteward_ErrWantSelf(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = s.Reupload(ctx, addr)
+	err = s.Reupload(ctx, addr, true)
 	if err != nil {
 		t.Fatal(err)
 	}

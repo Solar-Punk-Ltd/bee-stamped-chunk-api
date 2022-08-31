@@ -880,6 +880,16 @@ components:
       required: false
       description: >
         Determines if the uploaded data should be sent to the network immediately or in a deferred fashion. By default the upload will be deferred.
+    
+    SwarmStewardWithManifest:
+      in: header
+      name: swarm-steward-with-manifest
+      schema:
+        type: boolean
+        default: "false"
+      required: false
+      description: >
+        Determines if when using stewardship that the whole manifest shuld be stewarded or just the manifest node. By default the manifest node is stewarded.
 
   responses:
     "204":

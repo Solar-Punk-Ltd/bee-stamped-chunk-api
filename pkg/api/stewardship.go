@@ -41,7 +41,14 @@ func (s *Service) stewardshipPutHandler(w http.ResponseWriter, r *http.Request) 
 		jsonhttp.InternalServerError(w, "stewardship put: resolve name or address")
 		return
 	}
-	err = s.steward.Reupload(r.Context(), address)
+	withManifest, err := stewardWithManifest(r)
+	if err != nil {
+		s.logger.Debugf("stewardship put: parse with manifest %s: %v", nameOrHex, err)
+		s.logger.Error("stewardship put: parse with manifest")
+		jsonhttp.NotFound(w, nil)
+		return
+	}
+	err = s.steward.Reupload(r.Context(), address, withManifest)
 	if err != nil {
 		s.logger.Debug("stewardship put: re-upload failed", "chunk_address", address, "error", err)
 		s.logger.Error(nil, "stewardship put: re-upload failed")
@@ -65,7 +72,14 @@ func (s *Service) stewardshipGetHandler(w http.ResponseWriter, r *http.Request) 
 		jsonhttp.NotFound(w, nil)
 		return
 	}
-	res, err := s.steward.IsRetrievable(r.Context(), address)
+	withManifest, err := stewardWithManifest(r)
+	if err != nil {
+		s.logger.Debugf("stewardship put: parse with manifest %s: %v", nameOrHex, err)
+		s.logger.Error("stewardship put: parse with manifest")
+		jsonhttp.NotFound(w, nil)
+		return
+	}
+	res, err := s.steward.IsRetrievable(r.Context(), address, withManifest)
 	if err != nil {
 		s.logger.Debug("stewardship get: is retrievable check failed", "chunk_address", address, "error", err)
 		s.logger.Error(nil, "stewardship get: is retrievable")

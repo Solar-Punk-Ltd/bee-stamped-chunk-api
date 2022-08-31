@@ -518,3 +518,5 @@ func (s *Service) manifestFeed(
 	f := feeds.New(topic, common.BytesToAddress(owner))
 	return s.feedFactory.NewLookup(*t, f)
 }
+<<<<<<< HEAD
+=======
