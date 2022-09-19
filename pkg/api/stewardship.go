@@ -14,7 +14,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//  stewardshipPutHandler re-uploads root hash and all of its underlying
+//	stewardshipPutHandler re-uploads root hash and all of its underlying
+//
 // associated chunks to the network.
 func (s *Service) stewardshipPutHandler(w http.ResponseWriter, r *http.Request) {
 	nameOrHex := mux.Vars(r)["address"]
@@ -43,8 +44,8 @@ func (s *Service) stewardshipPutHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	withManifest, err := stewardWithManifest(r)
 	if err != nil {
-		s.logger.Debugf("stewardship put: parse with manifest %s: %v", nameOrHex, err)
-		s.logger.Error("stewardship put: parse with manifest")
+		s.logger.Debug("stewardship put: parse with manifest", "chunk_address", nameOrHex, "error", err)
+		s.logger.Error(nil, "stewardship put: parse with manifest")
 		jsonhttp.NotFound(w, nil)
 		return
 	}
@@ -74,8 +75,8 @@ func (s *Service) stewardshipGetHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	withManifest, err := stewardWithManifest(r)
 	if err != nil {
-		s.logger.Debugf("stewardship put: parse with manifest %s: %v", nameOrHex, err)
-		s.logger.Error("stewardship put: parse with manifest")
+		s.logger.Debug("stewardship put: parse with manifest", "chunk_address", nameOrHex, "error", err)
+		s.logger.Error(nil, "stewardship put: parse with manifest")
 		jsonhttp.NotFound(w, nil)
 		return
 	}
